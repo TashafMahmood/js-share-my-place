@@ -83,3 +83,7 @@ class PlaceFinder {
 }
 
 const placeFinder = new PlaceFinder()
+
+
+
+//    "build:prod": "webpack --config webpack.config.prod.js"
