@@ -8,10 +8,22 @@ class PlaceFinder {
         this.shareButn = document.getElementById('share-btn')
         locateUserButton.addEventListener('click', this.locateUserHandlers.bind(this))
         addressForm.addEventListener('submit', this.findUserAddressHandler.bind(this))
-        this.shareButn.addEventListener('click')
+        this.shareButn.addEventListener('click',this.sharePlaceaHandler.bind(this))
     }
 
+    sharePlaceaHandler(){
+        const SharedLinkInput = document.getElementById('share-link')
 
+        if(!navigator.clipboard){
+            SharedLinkInput.select();
+            return
+        }
+        navigator.clipboard.writeText(SharedLinkInput.value).then(()=>{
+          alert('Copied into clipboard')  
+        }).catch((err)=>{
+            SharedLinkInput.select();
+        })
+    }
     selectPlce(coordinates, address) {
         if (this.map) {
             this.map.render(coordinates)
@@ -20,24 +32,26 @@ class PlaceFinder {
         }
         this.shareButn.disabled = false
         const SharedLinkInput = document.getElementById('share-link')
+        SharedLinkInput.value=`${location.origin}/my-place?address=${encodeURI(address)}&lat=${coordinates.lat}&lng=${coordinates.lng}`
     }
 
 
-    async locateUserHandlers() {
+     locateUserHandlers() {
         if (!navigator.geolocation) {
             alert('location feature in not available in your browser - Please some other mordern browser');
             return
         }
         const modal = new Modal('loading-modal-content', 'Loading content.. Please wait')
         modal.showModal()
-        navigator.geolocation.getCurrentPosition(successResult => {
-
+        navigator.geolocation.getCurrentPosition(
+            async successResult => {
+ 
             const coordinates = {
                 lat: successResult.coords.latitude,
                 lng: successResult.coords.longitude
             }
 
-            const address = getLinkOftheAddress(coordinates)
+            const address = await getLinkOftheAddress(coordinates)
             modal.hideModal()
             this.selectPlce(coordinates, address)
             console.log(coordinates, "coordinates")
