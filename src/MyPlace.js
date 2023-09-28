@@ -1,19 +1,19 @@
-import {Map} from './UI/Map'
+import { Map } from './UI/Map'
 
-class LoadedPlace{
-    constructor(coordinates,address){
+class LoadedPlace {
+    constructor(coordinates, address) {
         new Map(coordinates);
         const headertitleEl = document.querySelector('header h1');
-        headertitleEl.textContent=address;
+        headertitleEl.textContent = address;
     }
 }
 
-const url=new URL(location.href);
+const url = new URL(location.href);
 const queryParams = url.searchParams;
-const coords={
-    lat:parseFloat(queryParams.get('lat')),
-    lng:+queryParams.get('lng')
+const coords = {
+    lat: parseFloat(queryParams.get('lat')),
+    lng: +queryParams.get('lng')
 }
-const address=queryParams.get('address')
+const address = queryParams.get('address')
 
-new LoadedPlace(coords,address); 
+new LoadedPlace(coords, address); 
