@@ -19,7 +19,8 @@ class PlaceFinder {
             return
         }
         navigator.clipboard.writeText(SharedLinkInput.value).then(()=>{
-          alert('Copied into clipboard')  
+         
+          window.open(SharedLinkInput.value, "_blank");
         }).catch((err)=>{
             SharedLinkInput.select();
         })
